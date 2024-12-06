@@ -7,7 +7,7 @@ import { UserInfo } from 'src/common/interfaces/auth.interface';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserMessageDto } from './dtos/user-message.dto';
 import { BotMessageDto } from './dtos/bot-message.dto';
-import { GetChatRoomResponseDto } from './dtos/create-chatroom-response.dto';
+import { GetChatRoomResponseDto } from './dtos/get-chatroom-response.dto';
 
 @Controller('chat')
 @ApiBearerAuth('accessToken')
