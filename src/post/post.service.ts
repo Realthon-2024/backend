@@ -6,6 +6,7 @@ import { CreatePostRequestDto } from './dtos/create-post-request.dto';
 import { GetPostListWithBoardRequestDto } from './dtos/get-post-list-request.dto';
 import { GetPostListWithBoardResponseDto } from './dtos/get-post-list-response.dto';
 import { BoardEntity } from 'src/entities/board.entity';
+import { GetPostResponseDto } from './dtos/get-post-response.dto';
 
 @Injectable()
 export class PostService {
@@ -41,6 +42,29 @@ export class PostService {
     return posts.map((post) => {
       return new GetPostListWithBoardResponseDto(board, post);
     });
+  }
+
+  async getPost(id: number, userId: number) {
+    await this.postRepository.update(id, {
+      views: () => 'views + 1',
+    });
+
+    const post = await this.postRepository.findOne({
+      where: { id },
+      relations: [
+        'board',
+        'user',
+        'comments',
+        'comments.user',
+        'postReactions',
+      ],
+    });
+
+    if (!post) {
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
+    }
+
+    return new GetPostResponseDto(post.board, post, userId);
   }
 
   async createPost(userId: number, body: CreatePostRequestDto) {

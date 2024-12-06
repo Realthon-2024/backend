@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreatePostRequestDto } from './dtos/create-post-request.dto';
@@ -20,6 +28,12 @@ export class PostController {
     @Query() query: GetPostListWithBoardRequestDto,
   ): Promise<GetPostListWithBoardResponseDto[]> {
     return await this.postService.getPosts(query);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id')
+  async getPost(@Param('id') id: number, @User() user: UserInfo) {
+    return await this.postService.getPost(id, user.id);
   }
 
   @UseGuards(AuthGuard('jwt'))
