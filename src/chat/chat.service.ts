@@ -74,13 +74,20 @@ export class ChatService {
     await this.chatMessageRepository.save(message);
   }
 
-  async getBotResponse(usermsg: UserMessageDto): Promise<string> {
+  async getBotResponse(
+    userId: number,
+    usermsg: UserMessageDto,
+  ): Promise<string> {
     try {
+      const foundUser = this.userRepository.findOne({ where: { id: userId } });
+      if (!foundUser) {
+        throw new NotFoundException('USER_NOT_FOUND');
+      }
 
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       
-      const prompt = "Please provide appropriate advice for the following situation in markdown format:\n\n" + usermsg.content;
+      const prompt = `Please provide appropriate advice for the following situation in ${(await foundUser).language} and in markdown format:\n\n` + usermsg.content;
       
       const result = await model.generateContent(prompt);
 
