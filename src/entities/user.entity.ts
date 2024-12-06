@@ -3,6 +3,8 @@ import { CommonEntity } from './common.entity';
 import { Sex } from 'src/common/enums/sex.enum';
 import { ChatRoomEntity } from './chat-room.entity';
 import { UserLanguageEntity } from './user-language.entity';
+import { PostEntity } from './post.entity';
+import { CommentEntity } from './comment.entity';
 
 @Entity('user')
 export class UserEntity extends CommonEntity {
@@ -35,4 +37,10 @@ export class UserEntity extends CommonEntity {
     cascade: true,
   })
   chatRooms: ChatRoomEntity[];
+
+  @OneToMany(() => PostEntity, (postEntity) => postEntity.user)
+  posts: PostEntity[];
+
+  @OneToMany(() => CommentEntity, (commentEntity) => commentEntity.user)
+  comments: CommentEntity[];
 }
