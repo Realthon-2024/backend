@@ -80,7 +80,7 @@ export class ChatService {
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       
-      const prompt = usermsg.content;
+      const prompt = "Please provide appropriate advice for the following situation in markdown format:\n\n" + usermsg.content;
       
       const result = await model.generateContent(prompt);
 
@@ -123,7 +123,7 @@ export class ChatService {
     });
 
     if (!room) {
-      throw new NotFoundException('채팅방을 찾을 수 없습니다.');
+      throw new NotFoundException('CHATROOM_NOT_FOUND');
     }
 
     return new GetChatRoomResponseDto(room);
