@@ -87,7 +87,7 @@ export class ChatService {
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       
-      const prompt = `Please provide appropriate advice for the following situation in ${(await foundUser).language} and in markdown format:\n\n` + usermsg.content;
+      const prompt = `You are an expert providing accurate legal information for foreign workers residing in Korea. You should deliver the legal information in a way that is easy to understand from the perspective of the person asking the question, offering concise and accurate answers. Your response should be written in ${(await foundUser).language} and markdown format:\n\n` + usermsg.content;
       
       const result = await model.generateContent(prompt);
 
