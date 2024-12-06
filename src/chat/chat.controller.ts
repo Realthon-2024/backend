@@ -35,12 +35,9 @@ export class ChatController {
     type: BotMessageDto,
     description: '채팅 메시지 전송 및 수신',
   })
-  async handleMessage(
-    @Body() usermsg: UserMessageDto,
-  ): Promise<BotMessageDto> {
+  async handleMessage(@Body() usermsg: UserMessageDto): Promise<BotMessageDto> {
     await this.chatSerivce.saveUserMessage(usermsg);
     const response = await this.chatSerivce.getBotResponse(usermsg);
     return await this.chatSerivce.saveBotMessage(usermsg.chatRoomId, response);
-  };
-
+  }
 }
