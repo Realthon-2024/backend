@@ -28,6 +28,12 @@ export class ChatRoomEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => ChatMessageEntity, (message) => message.chatRoom)
+  @CreateDateColumn()
+  updatedAt: Date;
+
+  @OneToMany(
+    () => ChatMessageEntity, 
+    (message) => message.chatRoom
+  )
   messages: ChatMessageEntity[];
 }

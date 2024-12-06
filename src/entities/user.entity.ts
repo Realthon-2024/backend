@@ -1,11 +1,12 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CommonEntity } from './common.entity';
 import { Sex } from 'src/common/enums/sex.enum';
 import { UserLanguageEntity } from './user-language';
+import { ChatRoomEntity } from './chat-room';
 
 @Entity('user')
 export class UserEntity extends CommonEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ nullable: true, type: 'enum', enum: Sex })
@@ -14,7 +15,7 @@ export class UserEntity extends CommonEntity {
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ nullable: true, type: 'varchar', length: 10 })
+  @Column({ type: 'varchar', length: 10 })
   username: string;
 
   @Column({ nullable: true, type: 'varchar' })
@@ -26,4 +27,12 @@ export class UserEntity extends CommonEntity {
     { cascade: true },
   )
   userLanguages: UserLanguageEntity[];
+
+  @OneToMany(
+    () => ChatRoomEntity,
+    (ChatRoomEntity) => ChatRoomEntity.id,
+    { cascade: true },
+  )
+  chatRooms: ChatRoomEntity[];
+  
 }
