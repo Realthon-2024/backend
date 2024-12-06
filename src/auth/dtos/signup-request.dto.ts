@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { Sex } from 'src/common/enums/sex.enum';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { Language } from 'src/common/enums/language.enum';
 
 export class SignUpRequestDto {
   @ApiProperty({ description: '사용자 ID' })
@@ -9,22 +9,32 @@ export class SignUpRequestDto {
   username: string;
 
   @ApiProperty({ description: '사용자 비밀번호' })
-  @IsNotEmpty()
   @IsString()
-  password: string;
-
-  @ApiProperty({ description: '성별', enum: Sex })
-  @IsEnum(Sex)
   @IsNotEmpty()
-  sex: Sex;
+  password: string;
 
   @ApiProperty({ description: '생년월일, yyyy-mm-dd 형식' })
   @IsString()
   @IsNotEmpty()
   birthday: string;
 
-  @ApiProperty({ description: '언어' })
+  @ApiProperty({ description: '사용자 연락처' })
   @IsString()
+  @IsNotEmpty()
+  contact: string;
+
+  @ApiProperty({ description: '사용자 이메일 주소' })
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({ description: '사용자 거주지 주소' })
+  @IsString()
+  @IsNotEmpty()
+  address: string;
+
+  @ApiProperty({ description: '언어', enum: Language })
+  @IsEnum(Language)
   @IsNotEmpty()
   language: string;
 }
