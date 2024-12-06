@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { BoardModule } from './board/board.module';
+import { PostModule } from './post/post.module';
 import * as path from 'path';
 
 @Module({
@@ -17,11 +19,12 @@ import * as path from 'path';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [path.join(__dirname, '/entities/**/*.entity.{js, ts}')],
-      autoLoadEntities: true,
       synchronize: true,
       logging: true,
     }),
     AuthModule,
+    BoardModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
