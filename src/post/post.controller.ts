@@ -21,6 +21,7 @@ import {
 import { GetPostListWithBoardRequestDto } from './dtos/get-post-list-request.dto';
 import { GetPostListWithBoardResponseDto } from './dtos/get-post-list-response.dto';
 import { GetPostResponseDto } from './dtos/get-post-response.dto';
+import { ToggleLikePostResponseDto } from './dtos/toggle-like-post.dto';
 
 @Controller('post')
 @ApiTags('Post')
@@ -67,5 +68,19 @@ export class PostController {
     @User() user: UserInfo,
   ): Promise<GetPostResponseDto> {
     return await this.postService.createPost(user.id, body);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':id/like')
+  @ApiOperation({ summary: '게시글 좋아요 토글' })
+  @ApiResponse({
+    type: ToggleLikePostResponseDto,
+    description: '게시글 좋아요 토글',
+  })
+  async toggleLikePost(
+    @Param('id') id: number,
+    @User() user: UserInfo,
+  ): Promise<ToggleLikePostResponseDto> {
+    return await this.postService.toggleLikePost(id, user.id);
   }
 }

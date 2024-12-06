@@ -7,6 +7,8 @@ import { GetPostListWithBoardRequestDto } from './dtos/get-post-list-request.dto
 import { GetPostListWithBoardResponseDto } from './dtos/get-post-list-response.dto';
 import { BoardEntity } from 'src/entities/board.entity';
 import { GetPostResponseDto } from './dtos/get-post-response.dto';
+import { PostReactionEntity } from 'src/entities/post-reaction.entity';
+import { ToggleLikePostResponseDto } from './dtos/toggle-like-post.dto';
 
 @Injectable()
 export class PostService {
@@ -15,6 +17,8 @@ export class PostService {
     private readonly postRepository: Repository<PostEntity>,
     @InjectRepository(BoardEntity)
     private readonly boardRepository: Repository<BoardEntity>,
+    @InjectRepository(PostReactionEntity)
+    private readonly postReactionRepository: Repository<PostReactionEntity>,
   ) {}
 
   async getPosts(
@@ -78,5 +82,36 @@ export class PostService {
     const savedPost = await this.postRepository.save(post);
 
     return new GetPostResponseDto(savedPost.board, savedPost, userId);
+  }
+
+  async toggleLikePost(
+    id: number,
+    userId: number,
+  ): Promise<ToggleLikePostResponseDto> {
+    const post = await this.postRepository.findOne({
+      where: { id },
+      relations: ['postReactions'],
+    });
+
+    if (!post) {
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
+    }
+
+    if (post.postReactions.find((reaction) => reaction.userId === userId)) {
+      await this.postReactionRepository.delete({
+        postId: id,
+        userId,
+      });
+      return new ToggleLikePostResponseDto(false);
+    } else {
+      const postReaction = this.postReactionRepository.create({
+        postId: id,
+        userId,
+      });
+
+      await this.postReactionRepository.save(postReaction);
+    }
+
+    return new ToggleLikePostResponseDto(true);
   }
 }
