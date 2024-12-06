@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ChatRoomEntity } from 'src/entities/chat-room.entity';
 import { CreateChatRoomRequestDto } from './dtos/create-chatroom-request.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,6 +21,9 @@ export class ChatService {
     body: CreateChatRoomRequestDto,
   ) {
     const foundUser = this.userRepository.findOne({ where: {id: user.id}});
+    if (!foundUser) {
+      throw new NotFoundException('USER_NOT_FOUND');
+    }
 
     const room = this.chatRoomRepository.create({
       title: body.title,

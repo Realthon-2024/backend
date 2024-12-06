@@ -15,7 +15,7 @@ export class ChatController {
     @User() user: UserInfo,
     @Body() body: CreateChatRoomRequestDto,
   ) {
-    return this.chatSerivce.createChatRoom(body, user);
+    return this.chatSerivce.createChatRoom(user, body);
   }
 
 }
