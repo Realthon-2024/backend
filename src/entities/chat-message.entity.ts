@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ChatRoomEntity } from './chat-room';
+import { ChatRoomEntity } from './chat-room.entity';
 
 @Entity('chat_message')
 export class ChatMessageEntity {

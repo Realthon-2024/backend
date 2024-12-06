@@ -21,10 +21,8 @@ export class UserLanguageEntity extends CommonEntity {
   language: Language;
 
   @JoinColumn({ name: 'userId' })
-  @ManyToOne(
-    () => UserEntity, 
-    (userEntity) => userEntity.userLanguages, 
-    { onDelete: 'CASCADE', },
-  )
+  @ManyToOne(() => UserEntity, (userEntity) => userEntity.userLanguages, {
+    onDelete: 'CASCADE',
+  })
   user: UserEntity;
 }

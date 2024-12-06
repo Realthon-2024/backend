@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { ChatMessageEntity } from './chat-message';
+import { ChatMessageEntity } from './chat-message.entity';
 
 @Entity('chat_room')
 export class ChatRoomEntity {
@@ -31,9 +31,6 @@ export class ChatRoomEntity {
   @CreateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(
-    () => ChatMessageEntity, 
-    (message) => message.chatRoom
-  )
+  @OneToMany(() => ChatMessageEntity, (message) => message.chatRoom)
   messages: ChatMessageEntity[];
 }
