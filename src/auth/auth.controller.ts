@@ -5,6 +5,7 @@ import { SignInRequestDto } from './dtos/signin-request.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserInfo } from 'src/common/interfaces/auth.interface';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +23,7 @@ export class AuthController {
     return this.authService.signIn(user.id);
   }
 
+  @ApiBearerAuth('refreshToken')
   @UseGuards(AuthGuard('jwt-refresh'))
   @Post('refresh')
   async refreshToken(@User() user: UserInfo) {

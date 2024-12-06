@@ -27,7 +27,7 @@ export class AuthService {
     await this.userRepository.save(user);
   }
 
-  async signIn(userId: string) {
+  async signIn(userId: number) {
     const token = await this.getToken({
       id: userId,
       signedAt: new Date().toISOString(),
@@ -68,7 +68,7 @@ export class AuthService {
     return new TokenResponseDto(accessToken, refreshToken);
   }
 
-  async saveRefreshToken(userId: string, refreshToken: string) {
+  async saveRefreshToken(userId: number, refreshToken: string) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('USER_NOT_FOUND');
@@ -76,7 +76,7 @@ export class AuthService {
     await this.userRepository.update(userId, { refreshToken });
   }
 
-  async refreshToken(userId: string) {
+  async refreshToken(userId: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('USER_NOT_FOUND');
