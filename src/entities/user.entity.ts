@@ -1,11 +1,9 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CommonEntity } from './common.entity';
 import { ChatRoomEntity } from './chat-room.entity';
-import { UserLanguageEntity } from './user-language.entity';
 import { PostEntity } from './post.entity';
 import { CommentEntity } from './comment.entity';
 import { PostReactionEntity } from './post-reaction.entity';
-import { Language } from 'src/common/enums/language.enum';
 
 @Entity('user')
 export class UserEntity extends CommonEntity {
@@ -30,8 +28,8 @@ export class UserEntity extends CommonEntity {
   @Column({ type: 'varchar' })
   address: string;
 
-  @Column({ nullable: true, type: 'enum', enum: Language })
-  langauge: Language;
+  @Column({ nullable: true, type: 'varchar' })
+  langauge: string;
 
   @Column({ name: 'refresh_token', nullable: true })
   refreshToken: string;

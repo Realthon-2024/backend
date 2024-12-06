@@ -12,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { TokenResponseDto } from './dtos/token-response.dto';
 import { JwtPayload } from 'src/common/interfaces/auth.interface';
 import { hash, compare } from 'bcrypt';
+import { SignUpResponseDto } from './dtos/sign-up-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,8 @@ export class AuthService {
     body.password = await hash(body.password, 10);
     const user = this.userRepository.create(body);
     await this.userRepository.save(user);
+
+    return new SignUpResponseDto(true);
   }
 
   async signIn(userId: number) {
