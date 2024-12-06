@@ -9,6 +9,7 @@ import { UserMessageDto } from './dtos/user-message.dto';
 import { BotMessageDto } from './dtos/bot-message.dto';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { GetChatRoomResponseDto } from './dtos/get-chatroom-response.dto';
+import { GetChatRoomListResponseDto } from './dtos/get-chatroom-list-response.dto';
 
 @Injectable()
 export class ChatService {
@@ -21,7 +22,29 @@ export class ChatService {
     private readonly chatMessageRepository: Repository<ChatMessageEntity>,
   ) {}
 
-  async createChatRoom(userId: number, body: CreateChatRoomRequestDto) {
+  async getChatRoomList(
+    userId: number
+  ): Promise<GetChatRoomListResponseDto[]> {
+    const foundUser = this.userRepository.findOne({ where: { id: userId } });
+    if (!foundUser) {
+      throw new NotFoundException('USER_NOT_FOUND');
+    }
+
+    const rooms = await this.chatRoomRepository.find({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return rooms.map((room) => {
+      return new GetChatRoomListResponseDto(room);
+    })
+  }
+
+  async createChatRoom(
+    userId: number, 
+    body: CreateChatRoomRequestDto,
+  ): Promise<GetChatRoomResponseDto> {
     const foundUser = this.userRepository.findOne({ where: { id: userId } });
     if (!foundUser) {
       throw new NotFoundException('USER_NOT_FOUND');
@@ -87,5 +110,22 @@ export class ChatService {
     const savedBotMsg = await this.chatMessageRepository.save(message);
 
     return new BotMessageDto(savedBotMsg);
+  }
+
+  async getChatRoom(
+    userId: number,
+    roomId: number,
+  ): Promise<GetChatRoomResponseDto> {
+
+    const room = await this.chatRoomRepository.findOne({
+      where: { id: roomId, userId: userId },
+      relations: [ 'messages', ],
+    });
+
+    if (!room) {
+      throw new NotFoundException('채팅방을 찾을 수 없습니다.');
+    }
+
+    return new GetChatRoomResponseDto(room);
   }
 }
