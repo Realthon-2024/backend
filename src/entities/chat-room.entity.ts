@@ -6,6 +6,7 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { ChatMessageEntity } from './chat-message.entity';
@@ -28,7 +29,7 @@ export class ChatRoomEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @OneToMany(() => ChatMessageEntity, (message) => message.chatRoom)

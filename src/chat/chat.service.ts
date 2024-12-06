@@ -8,6 +8,7 @@ import { ChatMessageEntity } from 'src/entities/chat-message.entity';
 import { UserMessageDto } from './dtos/user-message.dto';
 import { BotMessageDto } from './dtos/bot-message.dto';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GetChatRoomResponseDto } from './dtos/create-chatroom-response.dto';
 
 @Injectable()
 export class ChatService {
@@ -30,8 +31,9 @@ export class ChatService {
       ...body,
       userId: userId,
     });
+    const savedRoom = await this.chatRoomRepository.save(room);
 
-    return await this.chatRoomRepository.save(room);
+    return new GetChatRoomResponseDto(savedRoom);
   }
 
   async saveUserMessage(usermsg: UserMessageDto) {

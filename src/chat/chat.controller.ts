@@ -7,6 +7,7 @@ import { UserInfo } from 'src/common/interfaces/auth.interface';
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserMessageDto } from './dtos/user-message.dto';
 import { BotMessageDto } from './dtos/bot-message.dto';
+import { GetChatRoomResponseDto } from './dtos/create-chatroom-response.dto';
 
 @Controller('chat')
 @ApiBearerAuth('accessToken')
@@ -14,11 +15,16 @@ export class ChatController {
   constructor(private readonly chatSerivce: ChatService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('new')
+  @Post()
+  @ApiOperation({ summary: '채팅 방 생성' })
+  @ApiResponse({
+    type: BotMessageDto,
+    description: '채팅 방 생성',
+  })
   async createChatRoom(
     @User() user: UserInfo,
     @Body() body: CreateChatRoomRequestDto,
-  ) {
+  ): Promise<GetChatRoomResponseDto> {
     return await this.chatSerivce.createChatRoom(user.id, body);
   }
 
