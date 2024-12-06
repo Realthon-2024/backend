@@ -5,7 +5,7 @@ import { PostEntity } from './post.entity';
 @Entity('board')
 export class BoardEntity extends CommonEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ nullable: false, unique: true })
   name: string;

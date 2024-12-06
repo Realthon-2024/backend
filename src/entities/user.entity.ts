@@ -5,11 +5,12 @@ import { ChatRoomEntity } from './chat-room.entity';
 import { UserLanguageEntity } from './user-language.entity';
 import { PostEntity } from './post.entity';
 import { CommentEntity } from './comment.entity';
+import { PostReactionEntity } from './post-reaction.entity';
 
 @Entity('user')
 export class UserEntity extends CommonEntity {
-  @PrimaryGeneratedColumn()
-  id: string;
+  @PrimaryGeneratedColumn({ type: 'bigint' })
+  id: number;
 
   @Column({ nullable: true, type: 'enum', enum: Sex })
   sex: Sex;
@@ -43,4 +44,10 @@ export class UserEntity extends CommonEntity {
 
   @OneToMany(() => CommentEntity, (commentEntity) => commentEntity.user)
   comments: CommentEntity[];
+
+  @OneToMany(
+    () => PostReactionEntity,
+    (postReactionEntity) => postReactionEntity.user,
+  )
+  postReactions: PostReactionEntity[];
 }

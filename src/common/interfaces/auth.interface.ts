@@ -1,5 +1,5 @@
 export interface UserInfo {
-  id: string;
+  id: number;
 }
 
 export interface JwtPayload extends UserInfo {

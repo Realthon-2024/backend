@@ -10,6 +10,7 @@ import { CommonEntity } from './common.entity';
 import { UserEntity } from './user.entity';
 import { BoardEntity } from './board.entity';
 import { CommentEntity } from './comment.entity';
+import { PostReactionEntity } from './post-reaction.entity';
 
 @Entity('post')
 export class PostEntity extends CommonEntity {
@@ -28,6 +29,9 @@ export class PostEntity extends CommonEntity {
   @Column('text', { nullable: false })
   content: string;
 
+  @Column('int', { nullable: false, default: 0 })
+  views: number;
+
   @JoinColumn({ name: 'userId' })
   @ManyToOne(() => UserEntity, (userEntity) => userEntity.posts, {
     onDelete: 'SET NULL',
@@ -42,4 +46,13 @@ export class PostEntity extends CommonEntity {
     cascade: true,
   })
   comments: CommentEntity[];
+
+  @OneToMany(
+    () => PostReactionEntity,
+    (postReactionEntity) => postReactionEntity.post,
+    {
+      cascade: true,
+    },
+  )
+  postReactions: PostReactionEntity[];
 }
