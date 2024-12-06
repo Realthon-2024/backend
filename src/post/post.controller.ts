@@ -22,6 +22,7 @@ import { GetPostListWithBoardRequestDto } from './dtos/get-post-list-request.dto
 import { GetPostListWithBoardResponseDto } from './dtos/get-post-list-response.dto';
 import { GetPostResponseDto } from './dtos/get-post-response.dto';
 import { ToggleLikePostResponseDto } from './dtos/toggle-like-post.dto';
+import { GetPostRequestDto } from './dtos/get-post-request.dto';
 
 @Controller('post')
 @ApiTags('Post')
@@ -51,9 +52,10 @@ export class PostController {
   })
   async getPost(
     @Param('id') id: number,
+    @Query() query: GetPostRequestDto,
     @User() user: UserInfo,
   ): Promise<GetPostResponseDto> {
-    return await this.postService.getPost(id, user.id);
+    return await this.postService.getPost(id, user.id, query.translate);
   }
 
   @UseGuards(AuthGuard('jwt'))

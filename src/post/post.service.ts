@@ -1,3 +1,4 @@
+import { UserService } from './../user/user.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from 'src/entities/post.entity';
@@ -19,6 +20,7 @@ export class PostService {
     private readonly boardRepository: Repository<BoardEntity>,
     @InjectRepository(PostReactionEntity)
     private readonly postReactionRepository: Repository<PostReactionEntity>,
+    private readonly userService: UserService,
   ) {}
 
   async getPosts(
@@ -48,7 +50,11 @@ export class PostService {
     });
   }
 
-  async getPost(id: number, userId: number): Promise<GetPostResponseDto> {
+  async getPost(
+    id: number,
+    userId: number,
+    translate: boolean,
+  ): Promise<GetPostResponseDto> {
     await this.postRepository.update(id, {
       views: () => 'views + 1',
     });
@@ -68,7 +74,17 @@ export class PostService {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
 
-    return new GetPostResponseDto(post.board, post, userId);
+    const response = new GetPostResponseDto(post.board, post, userId);
+
+    if (translate) {
+      const translatedContent = await this.userService.translate(
+        response,
+        userId,
+      );
+      return translatedContent;
+    }
+
+    return response;
   }
 
   async createPost(

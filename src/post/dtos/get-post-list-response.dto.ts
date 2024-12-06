@@ -11,6 +11,11 @@ export class GetPostListWithBoardResponseDto {
   boardName: string;
 
   @ApiProperty({
+    description: '게시글 고유 Id',
+  })
+  id: number;
+
+  @ApiProperty({
     description: '게시글 제목',
     example: '게시글 제목',
   })
@@ -53,6 +58,7 @@ export class GetPostListWithBoardResponseDto {
   author: CommunityUserDto;
 
   constructor(board: BoardEntity, post: PostEntity) {
+    this.id = post.id;
     this.boardName = board.name;
     this.title = post.title;
     this.content = post.content;
