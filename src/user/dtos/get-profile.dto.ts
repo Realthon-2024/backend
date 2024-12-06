@@ -21,6 +21,9 @@ export class GetProfileDto {
   @ApiProperty({ description: '주소' })
   address: string;
 
+  @ApiProperty({ description: '언어' })
+  language: string;
+
   constructor(user: UserEntity) {
     this.id = user.id;
     this.username = user.username;
@@ -28,5 +31,6 @@ export class GetProfileDto {
     this.contact = user.contact;
     this.email = user.email;
     this.address = user.address;
+    this.language = user.language;
   }
 }

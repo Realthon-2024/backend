@@ -28,8 +28,8 @@ export class UserEntity extends CommonEntity {
   @Column({ type: 'varchar' })
   address: string;
 
-  @Column({ nullable: true, type: 'varchar' })
-  langauge: string;
+  @Column({ nullable: true })
+  language: string;
 
   @Column({ name: 'refresh_token', nullable: true })
   refreshToken: string;

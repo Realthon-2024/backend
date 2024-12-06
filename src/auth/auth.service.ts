@@ -24,7 +24,9 @@ export class AuthService {
 
   async signUp(body: SignUpRequestDto) {
     body.password = await hash(body.password, 10);
-    const user = this.userRepository.create(body);
+    const user = this.userRepository.create({
+      ...body,
+    });
     await this.userRepository.save(user);
 
     return new SignUpResponseDto(true);

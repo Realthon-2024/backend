@@ -21,8 +21,10 @@ export class UserController {
     return this.userService.getProfile(user.id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth('accessToken')
   @Get('translate-test')
-  async translateTest() {
-    return this.userService.test();
+  async translateTest(@User() user: UserInfo) {
+    return this.userService.test(user.id);
   }
 }

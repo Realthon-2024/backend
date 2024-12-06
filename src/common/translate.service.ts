@@ -12,6 +12,22 @@ export class TranslateService {
     );
   }
 
+  async translate(
+    text: string,
+    target: deepl.TargetLanguageCode,
+  ): Promise<string> {
+    const result = await this.translator.translateText(text, null, target);
+    return result.text;
+  }
+
+  async translateTo(
+    text: string,
+    target: deepl.TargetLanguageCode,
+  ): Promise<string> {
+    const result = await this.translator.translateText(text, null, target);
+    return result.text;
+  }
+
   async translateToEng(text: string): Promise<string> {
     const result = await this.translator.translateText(text, null, 'en-US');
     return result.text;
