@@ -8,6 +8,7 @@ import { BoardModule } from './board/board.module';
 import { PostModule } from './post/post.module';
 import { ChatModule } from './chat/chat.module';
 import { CommentModule } from './comment/comment.module';
+import { UserModule } from './user/user.module';
 import * as path from 'path';
 
 @Module({
@@ -21,7 +22,7 @@ import * as path from 'path';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [path.join(__dirname, '/entities/**/*.entity.{js, ts}')],
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     AuthModule,
@@ -29,6 +30,7 @@ import * as path from 'path';
     PostModule,
     ChatModule,
     CommentModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
