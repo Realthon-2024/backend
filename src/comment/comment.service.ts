@@ -3,6 +3,7 @@ import { CreateCommentRequestDto } from './dtos/create-comment-request.dto';
 import { CommentEntity } from 'src/entities/comment.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { GetCommentResponseDto } from './dtos/get-comment-response.dto';
 
 @Injectable()
 export class CommentService {
@@ -11,7 +12,10 @@ export class CommentService {
     private readonly commentRepository: Repository<CommentEntity>,
   ) {}
 
-  async createComment(userId: number, body: CreateCommentRequestDto) {
+  async createComment(
+    userId: number,
+    body: CreateCommentRequestDto,
+  ): Promise<GetCommentResponseDto> {
     const { postId, content } = body;
 
     const comment = this.commentRepository.create({
@@ -20,6 +24,8 @@ export class CommentService {
       content,
     });
 
-    return await this.commentRepository.save(comment);
+    const savedComment = await this.commentRepository.save(comment);
+
+    return new GetCommentResponseDto(savedComment);
   }
 }

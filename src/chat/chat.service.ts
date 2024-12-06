@@ -15,12 +15,9 @@ export class ChatService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
-  
-  async createChatRoom (
-    userId: number,
-    body: CreateChatRoomRequestDto,
-  ) {
-    const foundUser = this.userRepository.findOne({ where: {id: userId}});
+
+  async createChatRoom(userId: number, body: CreateChatRoomRequestDto) {
+    const foundUser = this.userRepository.findOne({ where: { id: userId } });
     if (!foundUser) {
       throw new NotFoundException('USER_NOT_FOUND');
     }
@@ -32,5 +29,4 @@ export class ChatService {
 
     return await this.chatRoomRepository.save(room);
   }
-
 }
