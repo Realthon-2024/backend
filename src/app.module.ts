@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { BoardModule } from './board/board.module';
 import { PostModule } from './post/post.module';
 import { ChatModule } from './chat/chat.module';
+import { CommentModule } from './comment/comment.module';
 import * as path from 'path';
 
 @Module({
@@ -27,6 +28,7 @@ import * as path from 'path';
     BoardModule,
     PostModule,
     ChatModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

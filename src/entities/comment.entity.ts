@@ -14,10 +14,13 @@ export class CommentEntity extends CommonEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: false })
+  content: string;
+
+  @Column({ type: 'bigint', nullable: true })
   userId: number;
 
-  @Column({ nullable: false })
+  @Column({ type: 'bigint', nullable: false })
   postId: number;
 
   @JoinColumn({ name: 'userId' })
