@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { BoardModule } from './board/board.module';
 import { PostModule } from './post/post.module';
+import { ChatModule } from './chat/chat.module';
 import * as path from 'path';
 
 @Module({
@@ -25,6 +26,7 @@ import * as path from 'path';
     AuthModule,
     BoardModule,
     PostModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
