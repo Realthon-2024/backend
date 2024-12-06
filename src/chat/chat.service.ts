@@ -17,21 +17,20 @@ export class ChatService {
   ) {}
   
   async createChatRoom (
-    user: UserInfo,
+    userId: number,
     body: CreateChatRoomRequestDto,
   ) {
-    const foundUser = this.userRepository.findOne({ where: {id: user.id}});
+    const foundUser = this.userRepository.findOne({ where: {id: userId}});
     if (!foundUser) {
       throw new NotFoundException('USER_NOT_FOUND');
     }
 
     const room = this.chatRoomRepository.create({
-      title: body.title,
-      userId: user.id,
+      ...body,
+      userId: userId,
     });
 
-    const newRoom = await this.chatRoomRepository.save(room);
-    return new CreateChatRoomResponseDto(newRoom.id);
+    return await this.chatRoomRepository.save(room);
   }
 
 }

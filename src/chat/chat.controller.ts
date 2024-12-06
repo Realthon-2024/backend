@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChatRoomRequestDto } from './dtos/create-chatroom-request.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -15,7 +15,10 @@ export class ChatController {
     @User() user: UserInfo,
     @Body() body: CreateChatRoomRequestDto,
   ) {
-    return this.chatSerivce.createChatRoom(user, body);
+    return await this.chatSerivce.createChatRoom(user.id, body);
   }
+
+  @Post()
+  async sendMessage() {};
 
 }
