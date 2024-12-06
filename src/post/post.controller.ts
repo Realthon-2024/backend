@@ -12,9 +12,15 @@ import { AuthGuard } from '@nestjs/passport';
 import { CreatePostRequestDto } from './dtos/create-post-request.dto';
 import { User } from 'src/common/decorators/user.decorator';
 import { UserInfo } from 'src/common/interfaces/auth.interface';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetPostListWithBoardRequestDto } from './dtos/get-post-list-request.dto';
 import { GetPostListWithBoardResponseDto } from './dtos/get-post-list-response.dto';
+import { GetPostResponseDto } from './dtos/get-post-response.dto';
 
 @Controller('post')
 @ApiTags('Post')
@@ -24,6 +30,11 @@ export class PostController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
+  @ApiOperation({ summary: '게시글 목록 조회' })
+  @ApiResponse({
+    type: [GetPostListWithBoardResponseDto],
+    description: '게시글 목록',
+  })
   async getPosts(
     @Query() query: GetPostListWithBoardRequestDto,
   ): Promise<GetPostListWithBoardResponseDto[]> {
@@ -32,13 +43,29 @@ export class PostController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
-  async getPost(@Param('id') id: number, @User() user: UserInfo) {
+  @ApiOperation({ summary: '게시글 상세 조회' })
+  @ApiResponse({
+    type: GetPostResponseDto,
+    description: '게시글 상세',
+  })
+  async getPost(
+    @Param('id') id: number,
+    @User() user: UserInfo,
+  ): Promise<GetPostResponseDto> {
     return await this.postService.getPost(id, user.id);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  async createPost(@Body() body: CreatePostRequestDto, @User() user: UserInfo) {
+  @ApiOperation({ summary: '게시글 생성' })
+  @ApiResponse({
+    type: GetPostResponseDto,
+    description: '게시글 생성',
+  })
+  async createPost(
+    @Body() body: CreatePostRequestDto,
+    @User() user: UserInfo,
+  ): Promise<GetPostResponseDto> {
     return await this.postService.createPost(user.id, body);
   }
 }

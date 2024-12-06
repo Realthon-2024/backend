@@ -44,7 +44,7 @@ export class PostService {
     });
   }
 
-  async getPost(id: number, userId: number) {
+  async getPost(id: number, userId: number): Promise<GetPostResponseDto> {
     await this.postRepository.update(id, {
       views: () => 'views + 1',
     });
@@ -67,11 +67,16 @@ export class PostService {
     return new GetPostResponseDto(post.board, post, userId);
   }
 
-  async createPost(userId: number, body: CreatePostRequestDto) {
+  async createPost(
+    userId: number,
+    body: CreatePostRequestDto,
+  ): Promise<GetPostResponseDto> {
     const post = this.postRepository.create({
       ...body,
       userId,
     });
-    return await this.postRepository.save(post);
+    const savedPost = await this.postRepository.save(post);
+
+    return new GetPostResponseDto(savedPost.board, savedPost, userId);
   }
 }
